@@ -1,0 +1,32 @@
+{
+  "name": "atlas-auth",
+  "version": "1.0.0",
+  "description": "This should expose some auth controllers and express routes to handle user authentication flow.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "swagger-jsdoc": "^3.2.9",
+    "swagger-ui-express": "^4.0.6"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.1"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:unit": "jest ./test/unit",
+    "test:integration": "jest ./test/integration",
+    "lint": "eslint --ext .js ./",
+    "format": "eslint --fix --ext .js ./",
+    "start": "nodemon --exec \"npm run lint && npm run test\""
+  },
+  "author": "Adrián Gonzalo",
+  "license": "ISC"
+}

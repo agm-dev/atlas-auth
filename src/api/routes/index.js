@@ -1,6 +1,9 @@
+/* eslint-disable import/no-named-default */
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpecs from '../../config/swagger';
+import { default as LoginRouter } from './login.route';
+import { default as AuthorizeRouter } from './authorize.route';
 
 const router = express.Router();
 
@@ -10,6 +13,8 @@ const router = express.Router();
  * /status:
  *  get:
  *    description: Status of the application
+ *    tags:
+ *      - status
  *    produces:
  *      - application/json
  *    responses:
@@ -20,8 +25,9 @@ router.get('/status', (req, res) => {
   res.json({ status: 'OK' });
 });
 
-router.get('/login');
-router.post('/authorize');
+router.use(LoginRouter);
+router.use(AuthorizeRouter);
+
 router.post('/user');
 
 router.get('/user/activate/:token');

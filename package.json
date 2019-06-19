@@ -1,6 +1,6 @@
 {
   "name": "atlas-auth",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "This should expose some auth controllers and express routes to handle user authentication flow.",
   "main": "index.js",
   "directories": {

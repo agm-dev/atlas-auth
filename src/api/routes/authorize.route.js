@@ -1,6 +1,5 @@
 import express from 'express';
-
-const authorizeController = (req, res) => (res.json({ live: true }));
+import authorizeController from '../controllers/authorizeController';
 
 const router = express.Router();
 

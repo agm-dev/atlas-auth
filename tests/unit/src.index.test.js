@@ -1,4 +1,5 @@
 require = require('esm')(module); // eslint-disable-line no-global-assign
+require('../includeEnvVars');
 const { authRouter } = require('../../src/index');
 
 test('exports authRouter', () => {

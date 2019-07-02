@@ -1,5 +1,6 @@
 require = require('esm')(module); // eslint-disable-line no-global-assign
 require('../includeEnvVars');
+const bcrypt = require('bcryptjs');
 const User = require('../../src/api/models/User.model');
 const { PUBLIC_USER_FIELDS } = require('../../src/config/vars');
 
@@ -62,7 +63,11 @@ describe('User model', () => {
     expect(typeof user.passwordMatches).toBe('function');
   });
 
-  test('passwordMatches returns true if password is valid and false if not', () => {
-    // TODO:
+  test('passwordMatches returns true if password is valid and false if not', async () => {
+    const password = 'supersecret';
+    const hash = await bcrypt.hash(password, 1);
+    user.password = hash;
+    const matches = user.passwordMatches(password);
+    expect(matches).toBeTruthy();
   });
 });

@@ -9,12 +9,14 @@ const throwRequired = (message) => {
 };
 
 const PRIVATE_KEY_PATH = process.env.PRIVATE_KEY_PATH || throwRequired('private key path');
+const PUBLIC_KEY_PATH = process.env.PUBLIC_KEY_PATH || throwRequired('public key path');
 
 export const env = process.env.NODE_ENV || 'production';
 export const mongo = {
   uri: process.env.NODE_ENV === 'test' ? MONGO_URI_TEST : MONGO_URI,
 };
 export const jwtSecret = readFileSync(PRIVATE_KEY_PATH).toString('ascii');
+export const jwtPublicKey = readFileSync(PUBLIC_KEY_PATH).toString('ascii');
 export const jwtAlgorithm = process.env.PRIVATE_KEY_ALGORITHM || 'RS256';
 export const jwtExpirationInterval = process.env.JWT_EXPIRATION_MINUTES
   || DEFAULT_JWT_EXPIRATION_MINUTES;

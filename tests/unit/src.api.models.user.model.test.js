@@ -1,8 +1,13 @@
 require = require('esm')(module); // eslint-disable-line no-global-assign
 require('../includeEnvVars');
 const bcrypt = require('bcryptjs');
+const jwt = require('jwt-simple');
 const User = require('../../src/api/models/User.model');
-const { PUBLIC_USER_FIELDS } = require('../../src/config/vars');
+const {
+  PUBLIC_USER_FIELDS,
+  jwtAlgorithm,
+  jwtPublicKey,
+} = require('../../src/config/vars');
 
 const RIGHT_USER_DATA = {
   email: 'test.email@somedomain.com',
@@ -48,11 +53,23 @@ describe('User model', () => {
   });
 
   test('token method generates a valid JWT token', () => {
-    // TODO:
+    // eslint-disable-next-line no-underscore-dangle
+    user._id = 1;
+    const token = user.token();
+    const isString = typeof token === 'string' && token.length;
+    expect(isString).toBeTruthy();
+
+    const sections = token.split('.');
+    expect(sections.length).toBe(3);
+    // there are some other stuff to test, but not worth it here.
   });
 
   test('generated token can be verified with public key', () => {
-    // TODO:
+    // eslint-disable-next-line no-underscore-dangle
+    user._id = 1;
+    const token = user.token();
+    const data = jwt.decode(token, jwtPublicKey, false, jwtAlgorithm);
+    expect(data).toHaveProperty('sub');
   });
 
   test('generated token includes public user fields', () => {

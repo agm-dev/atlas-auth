@@ -7,6 +7,7 @@ const {
   PUBLIC_USER_FIELDS,
   jwtAlgorithm,
   jwtPublicKey,
+  jwtFakePublicKey,
 } = require('../../src/config/vars');
 
 const RIGHT_USER_DATA = {
@@ -65,11 +66,16 @@ describe('User model', () => {
   });
 
   test('generated token can be verified with public key', () => {
-    // eslint-disable-next-line no-underscore-dangle
-    user._id = 1;
     const token = user.token();
     const data = jwt.decode(token, jwtPublicKey, false, jwtAlgorithm);
     expect(data).toHaveProperty('sub');
+  });
+
+  test('generated token verification fails if wrong CERT used', () => {
+    const token = user.token();
+    expect(() => {
+      jwt.decode(token, jwtFakePublicKey, false, jwtAlgorithm);
+    }).toThrow();
   });
 
   test('generated token includes public user fields', () => {

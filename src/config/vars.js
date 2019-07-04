@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { join } from 'path';
 
 const MONGO_URI_TEST = typeof process.env.MONGO_URI_TEST === 'string' && process.env.MONGO_URI_TEST.length ? process.env.MONGO_URI_TEST : '';
 const MONGO_URI = typeof process.env.MONGO_URI === 'string' && process.env.MONGO_URI.length ? process.env.MONGO_URI : '';
@@ -10,6 +11,7 @@ const throwRequired = (message) => {
 
 const PRIVATE_KEY_PATH = process.env.PRIVATE_KEY_PATH || throwRequired('private key path');
 const PUBLIC_KEY_PATH = process.env.PUBLIC_KEY_PATH || throwRequired('public key path');
+const FAKE_PUBLIC_KEY_PATH = join(__dirname, '../../tests/data/testKey.pem');
 
 export const env = process.env.NODE_ENV || 'production';
 export const mongo = {
@@ -17,6 +19,7 @@ export const mongo = {
 };
 export const jwtSecret = readFileSync(PRIVATE_KEY_PATH).toString('ascii');
 export const jwtPublicKey = readFileSync(PUBLIC_KEY_PATH).toString('ascii');
+export const jwtFakePublicKey = readFileSync(FAKE_PUBLIC_KEY_PATH).toString('ascii');
 export const jwtAlgorithm = process.env.PRIVATE_KEY_ALGORITHM || 'RS256';
 export const jwtExpirationInterval = process.env.JWT_EXPIRATION_MINUTES
   || DEFAULT_JWT_EXPIRATION_MINUTES;

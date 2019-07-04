@@ -56,6 +56,9 @@ userSchema.method({
       iat: nowUnix,
       // eslint-disable-next-line no-underscore-dangle
       sub: this._id,
+      email: this.email,
+      name: this.name,
+      scopes: this.scopes,
     };
     return jwt.encode(payload, jwtSecret, jwtAlgorithm);
   },

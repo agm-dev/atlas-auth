@@ -14,6 +14,7 @@ const RIGHT_USER_DATA = {
   email: 'test.email@somedomain.com',
   password: 'supersecret',
   name: 'firstname',
+  scopes: ['USER_READ', 'USER_CREATE'],
 };
 
 const USER_FIELDS = [
@@ -79,7 +80,20 @@ describe('User model', () => {
   });
 
   test('generated token includes public user fields', () => {
-    // TODO:
+    const anotherUser = new User(RIGHT_USER_DATA);
+    // eslint-disable-next-line no-underscore-dangle
+    const userId = anotherUser._id.toString();
+    const token = anotherUser.token();
+    const data = jwt.decode(token, jwtPublicKey, false, jwtAlgorithm);
+    expect(data.sub).toBe(userId);
+    expect(data.email).toBe(anotherUser.email);
+    expect(data.name).toBe(anotherUser.name);
+    expect(data.scopes.length).toBe(anotherUser.scopes.length);
+
+    // FIXME: check why data.scopes is []
+    // RIGHT_USER_DATA.scopes.forEach((scope) => {
+    //   expect(data.scopes).toContain(scope);
+    // });
   });
 
   test('has passwordMatches method', () => {

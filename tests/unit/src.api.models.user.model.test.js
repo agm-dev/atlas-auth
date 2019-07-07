@@ -107,4 +107,26 @@ describe('User model', () => {
     const matches = user.passwordMatches(password);
     expect(matches).toBeTruthy();
   });
+
+  test('has get method', () => {
+    expect(User).toHaveProperty('get');
+    expect(typeof User.get).toBe('function');
+  });
+
+  // TODO: get returns an user by id
+  // TODO: get throws error if user id doesn't exist
+
+  test('has findAndGenerateToken method', () => {
+    expect(User).toHaveProperty('findAndGenerateToken');
+    expect(typeof User.findAndGenerateToken).toBe('function');
+  });
+
+  // TODO: test findAndGenerateToken cases
+
+  test('has checkDuplicateEmail method', () => {
+    expect(User).toHaveProperty('checkDuplicateEmail');
+    expect(typeof User.checkDuplicateEmail).toBe('function');
+  });
+
+  // TODO: test checkDuplicateEmail cases
 });

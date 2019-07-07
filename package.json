@@ -27,8 +27,8 @@
   },
   "scripts": {
     "test": "jest",
-    "test:unit": "jest ./test/unit",
-    "test:integration": "jest ./test/integration",
+    "test:unit": "jest ./tests/unit",
+    "test:integration": "jest ./tests/integration",
     "lint": "eslint --ext .js ./",
     "format": "eslint --fix --ext .js ./",
     "start": "nodemon --exec \"npm run format && npm run test\""

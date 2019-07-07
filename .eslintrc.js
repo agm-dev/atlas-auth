@@ -4,5 +4,6 @@ module.exports = {
     'test': true,
     'expect': true,
     'describe': true,
+    'jest': true,
   }
 }

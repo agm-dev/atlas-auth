@@ -2,6 +2,7 @@ require = require('esm')(module); // eslint-disable-line no-global-assign
 require('../includeEnvVars');
 const bcrypt = require('bcryptjs');
 const jwt = require('jwt-simple');
+const httpStatus = require('http-status');
 const User = require('../../src/api/models/User.model');
 const {
   PUBLIC_USER_FIELDS,
@@ -9,6 +10,7 @@ const {
   jwtPublicKey,
   jwtFakePublicKey,
 } = require('../../src/config/vars');
+const APIError = require('../../src/api/utils/APIError').default;
 
 const RIGHT_USER_DATA = {
   email: 'test.email@somedomain.com',
@@ -23,6 +25,8 @@ const USER_FIELDS = [
   'name',
   'scopes',
 ];
+
+jest.mock('../../src/api/models/User.model.js');
 
 describe('User model', () => {
   const user = new User(RIGHT_USER_DATA);
@@ -113,8 +117,37 @@ describe('User model', () => {
     expect(typeof User.get).toBe('function');
   });
 
-  // TODO: get returns an user by id
-  // TODO: get throws error if user id doesn't exist
+  test('get method returns user by id', async () => {
+    const fakeId = '507f1f77bcf86cd799439011';
+    const fakeUser = {
+      _id: fakeId,
+      email: 'fake@email.com',
+    };
+
+    User.get = jest.fn().mockReturnValue(fakeUser);
+    const expectedUser = await User.get(fakeId);
+    // eslint-disable-next-line no-underscore-dangle
+    expect(expectedUser._id).toBe(fakeId);
+  });
+
+  test('get method throws APIError if user not found', async () => {
+    const errorMessage = 'User does not exist';
+    const errorStatus = httpStatus.NOT_FOUND;
+    User.get.mockImplementation(() => {
+      throw new APIError({
+        message: errorMessage,
+        status: errorStatus,
+      });
+    });
+
+    expect.assertions(2);
+    try {
+      await User.get('some-wrong-user-id');
+    } catch (err) {
+      expect(err.message).toBe(errorMessage);
+      expect(err.status).toBe(errorStatus);
+    }
+  });
 
   test('has findAndGenerateToken method', () => {
     expect(User).toHaveProperty('findAndGenerateToken');
